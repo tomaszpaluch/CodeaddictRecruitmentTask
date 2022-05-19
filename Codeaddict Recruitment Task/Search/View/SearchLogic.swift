@@ -1,10 +1,3 @@
-//
-//  MainLogic.swift
-//  Codeaddict Recruitment Task
-//
-//  Created by Tomasz Paluch on 19/05/2022.
-//
-
 import UIKit
 
 class SearchLogic: NSObject {
