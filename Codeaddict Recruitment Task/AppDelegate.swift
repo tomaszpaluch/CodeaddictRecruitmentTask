@@ -1,10 +1,3 @@
-//
-//  AppDelegate.swift
-//  Codeaddict Recruitment Task
-//
-//  Created by Tomasz Paluch on 19/05/2022.
-//
-
 import UIKit
 
 @main
@@ -13,7 +6,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow()
-        window?.rootViewController = ViewController()
+        window?.rootViewController = UINavigationController(
+            rootViewController: SearchViewController(
+                viewModel: .init(
+                    navigationItemTitle: "Search",
+                    headerViewLabelText: "Repositories"
+                )
+            )
+        )
         window?.makeKeyAndVisible()
     
         return true
