@@ -12,7 +12,7 @@ class ImageDataSource {
     
     func getImage(
         from path: String,
-        completion: @escaping () -> Void
+        completion: ((UIImage?) -> Void)? = nil
     ) -> UIImage? {
         if let image = images[path] {
             return image
@@ -25,7 +25,7 @@ class ImageDataSource {
                     self?.images[path] = image
                     self?.dates[Date()] = path
                     
-                    completion()
+                    completion?(image)
                 }
             }.resume()
             

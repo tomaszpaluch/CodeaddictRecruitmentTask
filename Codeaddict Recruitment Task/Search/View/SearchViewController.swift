@@ -1,6 +1,11 @@
 import UIKit
 
 class SearchViewController: UIViewController {
+    var coordinator: MainCoordinator? {
+        get { logic.coordinator }
+        set { logic.coordinator = newValue }
+    }
+    
     private let logic: SearchLogic
     private let searchBar: UISearchBar
     private let tableView: UITableView
@@ -15,7 +20,6 @@ class SearchViewController: UIViewController {
         view.backgroundColor = .systemBackground
         navigationItem.title = viewModel.navigationItemTitle
         
-//        searchBar.delegate = logic
         searchBar.searchBarStyle = .minimal
         searchBar.sizeToFit()
         logic.setupSearchBar(searchBar)

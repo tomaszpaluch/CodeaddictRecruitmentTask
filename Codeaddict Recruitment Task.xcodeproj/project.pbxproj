@@ -24,6 +24,10 @@
 		301FD2A42837B29B0054EA09 /* RestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 301FD2A02837B29B0054EA09 /* RestService.swift */; };
 		301FD2A72837C5890054EA09 /* ImageDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 301FD2A62837C5890054EA09 /* ImageDataSource.swift */; };
 		30AEA811283A6A0F001E48D1 /* RestModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AEA810283A6A0F001E48D1 /* RestModels.swift */; };
+		30AEA817283A6B96001E48D1 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AEA816283A6B96001E48D1 /* DetailsViewController.swift */; };
+		30AEA819283A7817001E48D1 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AEA818283A7817001E48D1 /* MainCoordinator.swift */; };
+		30AEA81B283A9AD2001E48D1 /* DetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AEA81A283A9AD2001E48D1 /* DetailsViewModel.swift */; };
+		30AEA81D283A9AE0001E48D1 /* DetailsLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AEA81C283A9AE0001E48D1 /* DetailsLogic.swift */; };
 		ABA1AEC3BFCC11FF8A3848BE /* Pods_Codeaddict_Recruitment_Task.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 833BB30B45701946897941D7 /* Pods_Codeaddict_Recruitment_Task.framework */; };
 		FD59760BE933E5C34E249201 /* Pods_Codeaddict_Recruitment_TaskTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DCB36CB9431FED028D77D0 /* Pods_Codeaddict_Recruitment_TaskTests.framework */; };
 /* End PBXBuildFile section */
@@ -68,6 +72,10 @@
 		301FD2A02837B29B0054EA09 /* RestService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RestService.swift; path = "Codeaddict Recruitment Task/Search/ViewModel/RestService.swift"; sourceTree = SOURCE_ROOT; };
 		301FD2A62837C5890054EA09 /* ImageDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataSource.swift; sourceTree = "<group>"; };
 		30AEA810283A6A0F001E48D1 /* RestModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestModels.swift; sourceTree = "<group>"; };
+		30AEA816283A6B96001E48D1 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
+		30AEA818283A7817001E48D1 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
+		30AEA81A283A9AD2001E48D1 /* DetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewModel.swift; sourceTree = "<group>"; };
+		30AEA81C283A9AE0001E48D1 /* DetailsLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsLogic.swift; sourceTree = "<group>"; };
 		42DCB36CB9431FED028D77D0 /* Pods_Codeaddict_Recruitment_TaskTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Codeaddict_Recruitment_TaskTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		833BB30B45701946897941D7 /* Pods_Codeaddict_Recruitment_Task.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Codeaddict_Recruitment_Task.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B26A6364C465BC1973CCFA2E /* Pods-Codeaddict Recruitment TaskTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Codeaddict Recruitment TaskTests.release.xcconfig"; path = "Target Support Files/Pods-Codeaddict Recruitment TaskTests/Pods-Codeaddict Recruitment TaskTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -128,12 +136,14 @@
 		300F817A28363C570034AB47 /* Codeaddict Recruitment Task */ = {
 			isa = PBXGroup;
 			children = (
+				30AEA812283A6B67001E48D1 /* Details */,
 				300F81B128367A510034AB47 /* Search */,
 				300F817B28363C570034AB47 /* AppDelegate.swift */,
 				300F817D28363C570034AB47 /* SceneDelegate.swift */,
 				300F818428363C5C0034AB47 /* Assets.xcassets */,
 				300F818628363C5C0034AB47 /* LaunchScreen.storyboard */,
 				300F818928363C5C0034AB47 /* Info.plist */,
+				30AEA818283A7817001E48D1 /* MainCoordinator.swift */,
 			);
 			path = "Codeaddict Recruitment Task";
 			sourceTree = "<group>";
@@ -169,8 +179,8 @@
 		300F81B228367A5B0034AB47 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				300F81B528367A880034AB47 /* SearchViewModel.swift */,
 				300F81AB28366C0D0034AB47 /* SearchLogic.swift */,
+				300F81B528367A880034AB47 /* SearchViewModel.swift */,
 				301FD2A02837B29B0054EA09 /* RestService.swift */,
 			);
 			path = ViewModel;
@@ -191,6 +201,40 @@
 			children = (
 				301FD29E2837B29B0054EA09 /* Error.swift */,
 				30AEA810283A6A0F001E48D1 /* RestModels.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		30AEA812283A6B67001E48D1 /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				30AEA815283A6B7C001E48D1 /* Model */,
+				30AEA814283A6B77001E48D1 /* View */,
+				30AEA813283A6B6D001E48D1 /* ViewModel */,
+			);
+			path = Details;
+			sourceTree = "<group>";
+		};
+		30AEA813283A6B6D001E48D1 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				30AEA81A283A9AD2001E48D1 /* DetailsViewModel.swift */,
+				30AEA81C283A9AE0001E48D1 /* DetailsLogic.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		30AEA814283A6B77001E48D1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				30AEA816283A6B96001E48D1 /* DetailsViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		30AEA815283A6B7C001E48D1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -439,9 +483,13 @@
 				300F817C28363C570034AB47 /* AppDelegate.swift in Sources */,
 				301FD2A72837C5890054EA09 /* ImageDataSource.swift in Sources */,
 				300F81B628367A880034AB47 /* SearchViewModel.swift in Sources */,
+				30AEA81D283A9AE0001E48D1 /* DetailsLogic.swift in Sources */,
 				300F817E28363C570034AB47 /* SceneDelegate.swift in Sources */,
 				300F81AE28366C310034AB47 /* MainTableViewCell.swift in Sources */,
+				30AEA819283A7817001E48D1 /* MainCoordinator.swift in Sources */,
+				30AEA81B283A9AD2001E48D1 /* DetailsViewModel.swift in Sources */,
 				301FD2A42837B29B0054EA09 /* RestService.swift in Sources */,
+				30AEA817283A6B96001E48D1 /* DetailsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

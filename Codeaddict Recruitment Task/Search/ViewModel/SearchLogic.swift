@@ -3,7 +3,10 @@ import RxSwift
 import RxCocoa
 
 class SearchLogic: NSObject {
+    var coordinator: MainCoordinator?
+    
     private let viewModel: SearchViewModel
+    
     private let restService: RestService
     private let imageDataSource: ImageDataSource
     private let disposeBag: DisposeBag
@@ -68,12 +71,13 @@ class SearchLogic: NSObject {
                     cellType: MainTableViewCell.self
                 )
             ) {  [weak self] row, item, cell in
-                let image = self?.imageDataSource.getImage(from: item.owner.avatar_url) {
+                let image = self?.imageDataSource.getImage(from: item.owner.avatar_url) { [weak self] image in
                     DispatchQueue.main.async {
                         tableView.reloadRows(
                             at: [IndexPath(row: row, section: 0)],
                             with: .fade
                         )
+                        self?.coordinator?.updateDetails(with: image)
                     }
                 }
                 
@@ -97,5 +101,16 @@ extension SearchLogic: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        if let item = searchResults?.value.items[indexPath.row] {
+            let image = imageDataSource.getImage(from: item.owner.avatar_url)
+            
+            coordinator?.showDetails(
+                with: .init(
+                    ownerImage: image,
+                    item: item
+                )
+            )
+        }
     }
 }
