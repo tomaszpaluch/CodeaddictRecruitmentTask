@@ -15,10 +15,11 @@ class SearchViewController: UIViewController {
         view.backgroundColor = .systemBackground
         navigationItem.title = viewModel.navigationItemTitle
         
-        searchBar.delegate = logic
+//        searchBar.delegate = logic
         searchBar.searchBarStyle = .minimal
         searchBar.sizeToFit()
-
+        logic.setupSearchBar(searchBar)
+        
         tableView.rowHeight = 100
         tableView.separatorStyle = .none
         tableView.tableHeaderView = searchBar

@@ -36,6 +36,7 @@ class MainTableViewCell: UITableViewCell {
         
         chevronImageView.image = UIImage(systemName: "chevron.right")
         chevronImageView.tintColor = UIColor(red: 140/255, green: 140/255, blue: 140/255, alpha: 1)
+        chevronImageView.contentMode = .scaleAspectFit
         
         contentView.addSubview(repoOwnerImage)
         contentView.addSubview(repoTitle)
@@ -75,6 +76,7 @@ class MainTableViewCell: UITableViewCell {
         repoTitle.translatesAutoresizingMaskIntoConstraints = false
         repoTitle.topAnchor.constraint(equalTo: repoOwnerImage.topAnchor, constant: 10).isActive = true
         repoTitle.leftAnchor.constraint(equalTo: repoOwnerImage.rightAnchor, constant: 16).isActive = true
+        repoTitle.rightAnchor.constraint(lessThanOrEqualTo: chevronImageView.leftAnchor, constant: -8).isActive = true
     }
     
     private func setupRepoStarIconViewConstraints() {
@@ -97,14 +99,18 @@ class MainTableViewCell: UITableViewCell {
             chevronImageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16).isActive = true
             chevronImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         }
+        
+        chevronImageView.widthAnchor.constraint(equalToConstant: 12).isActive = true
+        chevronImageView.heightAnchor.constraint(equalToConstant: 18).isActive = true
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup() {
-        repoTitle.text = "title"
-        repoStarLabel.text = "stars"
+    func setup(image: UIImage?, item: GitHubSearchItem) {
+        repoOwnerImage.image = image
+        repoTitle.text = item.full_name
+        repoStarLabel.text = "\(item.stargazers_count) stars"
     }
 }

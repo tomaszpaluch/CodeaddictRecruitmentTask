@@ -20,6 +20,10 @@
 		300F81B028366C4D0034AB47 /* MainTableViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300F81AF28366C4D0034AB47 /* MainTableViewHeaderView.swift */; };
 		300F81B628367A880034AB47 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300F81B528367A880034AB47 /* SearchViewModel.swift */; };
 		300F81E62836822C0034AB47 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 300F81E52836822C0034AB47 /* Podfile */; };
+		301FD2A22837B29B0054EA09 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 301FD29E2837B29B0054EA09 /* Error.swift */; };
+		301FD2A42837B29B0054EA09 /* RestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 301FD2A02837B29B0054EA09 /* RestService.swift */; };
+		301FD2A72837C5890054EA09 /* ImageDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 301FD2A62837C5890054EA09 /* ImageDataSource.swift */; };
+		30AEA811283A6A0F001E48D1 /* RestModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AEA810283A6A0F001E48D1 /* RestModels.swift */; };
 		ABA1AEC3BFCC11FF8A3848BE /* Pods_Codeaddict_Recruitment_Task.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 833BB30B45701946897941D7 /* Pods_Codeaddict_Recruitment_Task.framework */; };
 		FD59760BE933E5C34E249201 /* Pods_Codeaddict_Recruitment_TaskTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DCB36CB9431FED028D77D0 /* Pods_Codeaddict_Recruitment_TaskTests.framework */; };
 /* End PBXBuildFile section */
@@ -59,7 +63,11 @@
 		300F81AD28366C310034AB47 /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
 		300F81AF28366C4D0034AB47 /* MainTableViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewHeaderView.swift; sourceTree = "<group>"; };
 		300F81B528367A880034AB47 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
-		300F81E52836822C0034AB47 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		300F81E52836822C0034AB47 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		301FD29E2837B29B0054EA09 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Error.swift; path = "Codeaddict Recruitment Task/Search/Model/Error.swift"; sourceTree = SOURCE_ROOT; };
+		301FD2A02837B29B0054EA09 /* RestService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RestService.swift; path = "Codeaddict Recruitment Task/Search/ViewModel/RestService.swift"; sourceTree = SOURCE_ROOT; };
+		301FD2A62837C5890054EA09 /* ImageDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataSource.swift; sourceTree = "<group>"; };
+		30AEA810283A6A0F001E48D1 /* RestModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestModels.swift; sourceTree = "<group>"; };
 		42DCB36CB9431FED028D77D0 /* Pods_Codeaddict_Recruitment_TaskTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Codeaddict_Recruitment_TaskTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		833BB30B45701946897941D7 /* Pods_Codeaddict_Recruitment_Task.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Codeaddict_Recruitment_Task.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B26A6364C465BC1973CCFA2E /* Pods-Codeaddict Recruitment TaskTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Codeaddict Recruitment TaskTests.release.xcconfig"; path = "Target Support Files/Pods-Codeaddict Recruitment TaskTests/Pods-Codeaddict Recruitment TaskTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -153,6 +161,7 @@
 				300F81B428367A6E0034AB47 /* Model */,
 				300F81B328367A650034AB47 /* View */,
 				300F81B228367A5B0034AB47 /* ViewModel */,
+				301FD2A62837C5890054EA09 /* ImageDataSource.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -161,6 +170,8 @@
 			isa = PBXGroup;
 			children = (
 				300F81B528367A880034AB47 /* SearchViewModel.swift */,
+				300F81AB28366C0D0034AB47 /* SearchLogic.swift */,
+				301FD2A02837B29B0054EA09 /* RestService.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -169,7 +180,6 @@
 			isa = PBXGroup;
 			children = (
 				300F817F28363C570034AB47 /* SearchViewController.swift */,
-				300F81AB28366C0D0034AB47 /* SearchLogic.swift */,
 				300F81AD28366C310034AB47 /* MainTableViewCell.swift */,
 				300F81AF28366C4D0034AB47 /* MainTableViewHeaderView.swift */,
 			);
@@ -179,6 +189,8 @@
 		300F81B428367A6E0034AB47 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				301FD29E2837B29B0054EA09 /* Error.swift */,
+				30AEA810283A6A0F001E48D1 /* RestModels.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -191,7 +203,6 @@
 				1B483C93D0E443A33516CD1E /* Pods-Codeaddict Recruitment TaskTests.debug.xcconfig */,
 				B26A6364C465BC1973CCFA2E /* Pods-Codeaddict Recruitment TaskTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -420,13 +431,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				301FD2A22837B29B0054EA09 /* Error.swift in Sources */,
+				30AEA811283A6A0F001E48D1 /* RestModels.swift in Sources */,
 				300F81B028366C4D0034AB47 /* MainTableViewHeaderView.swift in Sources */,
 				300F818028363C570034AB47 /* SearchViewController.swift in Sources */,
 				300F81AC28366C0D0034AB47 /* SearchLogic.swift in Sources */,
 				300F817C28363C570034AB47 /* AppDelegate.swift in Sources */,
+				301FD2A72837C5890054EA09 /* ImageDataSource.swift in Sources */,
 				300F81B628367A880034AB47 /* SearchViewModel.swift in Sources */,
 				300F817E28363C570034AB47 /* SceneDelegate.swift in Sources */,
 				300F81AE28366C310034AB47 /* MainTableViewCell.swift in Sources */,
+				301FD2A42837B29B0054EA09 /* RestService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
