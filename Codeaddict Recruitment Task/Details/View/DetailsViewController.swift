@@ -1,6 +1,11 @@
 import UIKit
 
 class DetailsViewController: UIViewController {
+    var coordinator: MainCoordinator? {
+        get { logic.coordinator }
+        set { logic.coordinator = newValue }
+    }
+    
     private let logic: DetailsLogic
     
     private let ownerImageView: UIImageView
@@ -92,6 +97,8 @@ class DetailsViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         
         view.backgroundColor = .systemBackground
+        viewOnlineButton.addTarget(self, action: #selector(openURL), for: .touchUpInside)
+        shareRepoButton.addTarget(self, action: #selector(shareRepo), for: .touchUpInside)
         
         view.addSubview(ownerImageView)
         imageOverlayStack.addArrangedSubview(repoByLabel)
@@ -118,6 +125,14 @@ class DetailsViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc private func openURL() {
+        logic.openRepoURL()
+    }
+    
+    @objc private func shareRepo() {
+        logic.shareRepo()
     }
     
     private func setupOwnerImageConstraints() {

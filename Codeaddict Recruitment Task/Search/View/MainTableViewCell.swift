@@ -110,7 +110,7 @@ class MainTableViewCell: UITableViewCell {
     
     func setup(image: UIImage?, item: GitHubSearchItem) {
         repoOwnerImage.image = image
-        repoTitle.text = item.full_name
-        repoStarLabel.text = "\(item.stargazers_count) stars"
+        repoTitle.text = item.name
+        repoStarLabel.text = "\(item.stargazersCount) stars"
     }
 }

@@ -1,14 +1,12 @@
 import UIKit
 
 protocol Coordinator {
-//    var childCoordinators: [Coordinator] { get set }
     var navigationController: UINavigationController { get set }
 
     func initalizeRoot()
 }
 
 class MainCoordinator: Coordinator {
-//    var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
 
     init(navigationController: UINavigationController) {
@@ -31,6 +29,8 @@ class MainCoordinator: Coordinator {
     func showDetails(with viewModel: DetailsViewModel) {
         let details = DetailsViewController(viewModel: viewModel)
         
+        details.coordinator = self
+        
         navigationController.pushViewController(details, animated: true)
     }
     
@@ -38,5 +38,10 @@ class MainCoordinator: Coordinator {
         if let controller = navigationController.topViewController as? DetailsViewController {
             controller.update(image: image)
         }
+    }
+    
+    func showActivityScreen(with items: [Any]) {
+        let activity = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        navigationController.present(activity, animated: true)
     }
 }

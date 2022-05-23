@@ -7,7 +7,7 @@ class SearchLogic: NSObject {
     
     private let viewModel: SearchViewModel
     
-    private let restService: RestService
+    private let restService: GitHubSearchServiceBroker
     private let imageDataSource: ImageDataSource
     private let disposeBag: DisposeBag
 
@@ -18,14 +18,14 @@ class SearchLogic: NSObject {
     init(viewModel: SearchViewModel) {
         self.viewModel = viewModel
         disposeBag = DisposeBag()
-        restService = RestService()
+        restService = GitHubSearchServiceBroker()
         imageDataSource = ImageDataSource()
         cellIdentifier = "cellID"
         
         searchResults = BehaviorRelay(
             value: GitHubSearchResult(
-                total_count: 0,
-                incomplete_results: true,
+                totalCount: 0,
+                incompleteResults: true,
                 items: []
             )
         )
@@ -41,7 +41,7 @@ class SearchLogic: NSObject {
                 if phrase.isEmpty {
                     return .empty()
                 } else {
-                    return                 self?.restService.makeInquiry(
+                    return self?.restService.makeObservable(
                         for: phrase
                     ) ?? .empty()
                 }
@@ -71,7 +71,7 @@ class SearchLogic: NSObject {
                     cellType: MainTableViewCell.self
                 )
             ) {  [weak self] row, item, cell in
-                let image = self?.imageDataSource.getImage(from: item.owner.avatar_url) { [weak self] image in
+                let image = self?.imageDataSource.getImage(from: item.owner.avatarURL) { [weak self] image in
                     DispatchQueue.main.async {
                         tableView.reloadRows(
                             at: [IndexPath(row: row, section: 0)],
@@ -103,7 +103,7 @@ extension SearchLogic: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         if let item = searchResults?.value.items[indexPath.row] {
-            let image = imageDataSource.getImage(from: item.owner.avatar_url)
+            let image = imageDataSource.getImage(from: item.owner.avatarURL)
             
             coordinator?.showDetails(
                 with: .init(

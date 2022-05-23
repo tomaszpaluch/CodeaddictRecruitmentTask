@@ -6,12 +6,15 @@ struct DetailsViewModel {
     let repoAuthorName: String
     let starCount: Int
     let repoTitle: String
+    let repoURL: URL?
     
     init(ownerImage: UIImage?, item: GitHubSearchItem) {
         self.ownerImage = ownerImage
         
         repoAuthorName = item.owner.login
-        starCount = item.stargazers_count
-        repoTitle = item.full_name
+        starCount = item.stargazersCount
+        repoTitle = item.name
+        
+        repoURL = URL(string: item.htmlURL)
     }
 }
