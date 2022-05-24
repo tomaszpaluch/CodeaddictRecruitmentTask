@@ -8,31 +8,47 @@ class SearchViewController: UIViewController {
     
     private let logic: SearchLogic
     private let searchBar: UISearchBar
+    private let activityIndicator: UIActivityIndicatorView
     private let tableView: UITableView
     
-    init(viewModel: SearchViewModel) {
-        logic = SearchLogic(viewModel: viewModel)
+    init(logic: SearchLogic) {
+        self.logic = logic
+        
         searchBar = UISearchBar()
+        activityIndicator = UIActivityIndicatorView()
         tableView = UITableView()
+        
+        searchBar.searchBarStyle = .minimal
+        searchBar.sizeToFit()
+                
+        tableView.rowHeight = 100
+        tableView.separatorStyle = .none
+        tableView.tableHeaderView = searchBar
         
         super.init(nibName: nil, bundle: nil)
         
         view.backgroundColor = .systemBackground
-        navigationItem.title = viewModel.navigationItemTitle
-        
-        searchBar.searchBarStyle = .minimal
-        searchBar.sizeToFit()
-        logic.setupSearchBar(searchBar)
-        
-        tableView.rowHeight = 100
-        tableView.separatorStyle = .none
-        tableView.tableHeaderView = searchBar
-        logic.setupTableView(tableView)
+        navigationItem.title = logic.viewModel.navigationItemTitle
         
         view.addSubview(tableView)
+        tableView.addSubview(activityIndicator)
 
-        setupSearchBarConstrainta()
+        setupSearchBarConstraints()
         setupTableViewConstraints()
+        setupActivityIndicatorConstraints()
+
+        logic.showActivityIndicator = { [weak self] show in
+            DispatchQueue.main.async {
+                if show {
+                    self?.activityIndicator.startAnimating()
+                } else {
+                    self?.activityIndicator.stopAnimating()
+                }
+            }
+        }
+        
+        logic.setupSearchBar(searchBar)
+        logic.setupTableView(tableView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,7 +62,7 @@ class SearchViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupSearchBarConstrainta() {
+    private func setupSearchBarConstraints() {
         searchBar.translatesAutoresizingMaskIntoConstraints = false
 
         if let view = tableView.tableHeaderView {
@@ -56,6 +72,12 @@ class SearchViewController: UIViewController {
         
         searchBar.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 8).isActive = true
         searchBar.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -8).isActive = true
+    }
+    
+    private func setupActivityIndicatorConstraints() {
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.centerYAnchor.constraint(equalTo: tableView.centerYAnchor).isActive = true
+        activityIndicator.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
     }
     
     private func setupTableViewConstraints() {

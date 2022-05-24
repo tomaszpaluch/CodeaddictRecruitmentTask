@@ -1,7 +1,11 @@
 import Foundation
 import RxSwift
 
-class GitHubCommitServiceBroker {
+protocol GitHubCommitServiceBrokerable {
+    func makeObservable(owner: String, repo: String) -> Observable<[GitHubCommit]>
+}
+
+class GitHubCommitServiceBroker: GitHubCommitServiceBrokerable {
     private let serviceURL: (String, String) -> URL?
     private let restService: RestService<[GitHubCommit]>
     

@@ -1,7 +1,12 @@
 import Foundation
 import UIKit
 
-class ImageDataSource {
+protocol ImageDataSourceable {
+    func getImage(from path: String) -> UIImage?
+    func getImage(from path: String, completion: ((UIImage?) -> Void)?) -> UIImage?
+}
+
+class ImageDataSource: ImageDataSourceable {
     var images: [String : UIImage]
     var dates: [Date : String]
     
@@ -10,9 +15,13 @@ class ImageDataSource {
         dates = [:]
     }
     
+    func getImage(from path: String) -> UIImage? {
+        self.getImage(from: path, completion: nil)
+    }
+    
     func getImage(
         from path: String,
-        completion: ((UIImage?) -> Void)? = nil
+        completion: ((UIImage?) -> Void)?
     ) -> UIImage? {
         if let image = images[path] {
             return image

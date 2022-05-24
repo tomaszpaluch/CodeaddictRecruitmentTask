@@ -4,24 +4,33 @@ import RxSwift
 class DetailsLogic: NSObject {
     var coordinator: MainCoordinator?
     
-    private let viewModel: DetailsViewModel
+    var hideActivityIndicator: (() -> Void)?
     
-    private let restService: GitHubCommitServiceBroker
+    let viewModel: DetailsViewModel
+    
+    private let restService: GitHubCommitServiceBrokerable
     private let disposeBag: DisposeBag
 
     private let cellIdentifier: String
     
-    init(viewModel: DetailsViewModel) {
+    init(
+        viewModel: DetailsViewModel,
+        restService: GitHubCommitServiceBrokerable,
+        disposeBag: DisposeBag
+    ) {
         self.viewModel = viewModel
         
-        restService = GitHubCommitServiceBroker()
-        disposeBag = DisposeBag()
+        self.restService = restService
+        self.disposeBag = disposeBag
 
         cellIdentifier = "cellID"
     }
     
     func setupTableView(_ tableView: UITableView) {
-        tableView.register(DetailsTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.register(
+            DetailsTableViewCell.self,
+            forCellReuseIdentifier: cellIdentifier
+        )
         
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableView.automaticDimension
@@ -30,6 +39,11 @@ class DetailsLogic: NSObject {
               
         restService.makeObservable(owner: viewModel.repoAuthorName, repo: viewModel.repoTitle)
             .map { $0.enumerated().prefix(3) }
+            .do(onNext: { [weak self] _ in
+                self?.hideActivityIndicator?()
+            }, onError: { [weak self] error in
+                self?.coordinator?.showAlert()
+            })
             .bind(
                 to: tableView.rx.items(
                 cellIdentifier: cellIdentifier,

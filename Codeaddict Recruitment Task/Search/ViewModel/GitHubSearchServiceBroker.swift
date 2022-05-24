@@ -1,7 +1,11 @@
 import Foundation
 import RxSwift
 
-class GitHubSearchServiceBroker {
+protocol GitHubSearchServiceBrokerable {
+    func makeObservable(for phrase: String) -> Observable<GitHubSearchResult>
+}
+
+class GitHubSearchServiceBroker: GitHubSearchServiceBrokerable {
     private let serviceURL: (String) -> URL?
     private let restService: RestService<GitHubSearchResult>
     

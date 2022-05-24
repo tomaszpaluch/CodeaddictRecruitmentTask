@@ -5,21 +5,28 @@ import RxCocoa
 class SearchLogic: NSObject {
     var coordinator: MainCoordinator?
     
-    private let viewModel: SearchViewModel
+    var showActivityIndicator: ((Bool) -> Void)?
     
-    private let restService: GitHubSearchServiceBroker
-    private let imageDataSource: ImageDataSource
+    let viewModel: SearchViewModel
+    
+    private let restService: GitHubSearchServiceBrokerable
+    private let imageDataSource: ImageDataSourceable
     private let disposeBag: DisposeBag
 
     private let cellIdentifier: String
     
     private var searchResults: BehaviorRelay<GitHubSearchResult>?
     
-    init(viewModel: SearchViewModel) {
+    init(
+        viewModel: SearchViewModel,
+        restService: GitHubSearchServiceBrokerable,
+        imageDataSource: ImageDataSourceable,
+        disposeBag: DisposeBag
+    ) {
         self.viewModel = viewModel
-        disposeBag = DisposeBag()
-        restService = GitHubSearchServiceBroker()
-        imageDataSource = ImageDataSource()
+        self.restService = restService
+        self.imageDataSource = imageDataSource
+        self.disposeBag = disposeBag
         cellIdentifier = "cellID"
         
         searchResults = BehaviorRelay(
@@ -34,9 +41,16 @@ class SearchLogic: NSObject {
     func setupSearchBar(_ searchBar: UISearchBar) {
         searchBar.rx.text
             .orEmpty
+            .do(onCompleted: {
+                print("completed")
+            })
+            .do(onNext: { [weak self] phrase in
+                if !phrase.isEmpty {
+                    self?.showActivityIndicator?(true)
+                }
+            })
             .debounce(.seconds(1), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
-            .do(onNext: { print($0) })
             .flatMap { [weak self] phrase -> Observable<GitHubSearchResult> in
                 if phrase.isEmpty {
                     return .empty()
@@ -50,6 +64,8 @@ class SearchLogic: NSObject {
                 self?.searchResults?.accept(
                     result
                 )
+            }, onError: { [weak self] error in
+                self?.coordinator?.showAlert()
             })
             .disposed(by: disposeBag)
     }
@@ -65,6 +81,9 @@ class SearchLogic: NSObject {
         searchResults?
             .asObservable()
             .map { $0.items }
+            .do(onNext: { [weak self] item in
+                self?.showActivityIndicator?(false)
+            })
             .bind(
                 to: tableView.rx.items(
                     cellIdentifier: cellIdentifier,

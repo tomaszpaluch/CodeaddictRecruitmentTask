@@ -18,10 +18,11 @@ class DetailsViewController: UIViewController {
     private let viewOnlineButton: UIButton
     private let commitsHistoryLabel: UILabel
     private let commitsTableView: UITableView
+    private let activityIndicator: UIActivityIndicatorView
     private let shareRepoButton: UIButton
     
-    init(viewModel: DetailsViewModel) {
-        logic = DetailsLogic(viewModel: viewModel)
+    init(logic: DetailsLogic) {
+        self.logic = logic
         
         var config = UIButton.Configuration.filled()
         config.imagePadding = 9
@@ -38,9 +39,10 @@ class DetailsViewController: UIViewController {
         viewOnlineButton = UIButton()
         commitsHistoryLabel = UILabel()
         commitsTableView = UITableView()
+        activityIndicator = UIActivityIndicatorView()
         shareRepoButton = UIButton(configuration: config)
         
-        if let ownerImage = viewModel.ownerImage {
+        if let ownerImage = logic.viewModel.ownerImage {
             ownerImageView.image = ownerImage
             ownerImageView.layer.masksToBounds = true
         } else {
@@ -53,7 +55,7 @@ class DetailsViewController: UIViewController {
         repoByLabel.font = .systemFont(ofSize: 15, weight: .semibold)
         
         repoOwnerNameLabel.textColor = .white
-        repoOwnerNameLabel.text = viewModel.repoAuthorName
+        repoOwnerNameLabel.text = logic.viewModel.repoAuthorName
         repoOwnerNameLabel.font = .systemFont(ofSize: 28, weight: .bold)
         
         repoStarIconView.image = UIImage(systemName: "star.fill")
@@ -61,7 +63,7 @@ class DetailsViewController: UIViewController {
         repoStarIconView.contentMode = .scaleAspectFit
         
         numberOfStarsLabel.textColor = .white.withAlphaComponent(0.5)
-        numberOfStarsLabel.text = "Number of Stars (\(viewModel.starCount))"
+        numberOfStarsLabel.text = "Number of Stars (\(logic.viewModel.starCount))"
         numberOfStarsLabel.font = .systemFont(ofSize: 15, weight: .semibold)
         
         numberOfStarsStack.axis = .horizontal
@@ -72,7 +74,7 @@ class DetailsViewController: UIViewController {
         imageOverlayStack.alignment = .leading
         
         repoTitleLabel.font = .systemFont(ofSize: 17, weight: .semibold)
-        repoTitleLabel.text = viewModel.repoTitle
+        repoTitleLabel.text = logic.viewModel.repoTitle
         
         viewOnlineButton.setTitle("VIEW ONLINE", for: .normal)
         viewOnlineButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
@@ -84,8 +86,8 @@ class DetailsViewController: UIViewController {
         commitsHistoryLabel.text = "Commits History"
         commitsHistoryLabel.font = .systemFont(ofSize: 22, weight: .bold)
         
-        logic.setupTableView(commitsTableView)
-
+        activityIndicator.startAnimating()
+        
         let shareIcon = UIImage(imageLiteralResourceName: "shareIcon")
         
         shareRepoButton.setTitle("Share Repo", for: .normal)
@@ -111,6 +113,7 @@ class DetailsViewController: UIViewController {
         view.addSubview(viewOnlineButton)
         view.addSubview(commitsHistoryLabel)
         view.addSubview(commitsTableView)
+        commitsTableView.addSubview(activityIndicator)
         view.addSubview(shareRepoButton)
         
         setupOwnerImageConstraints()
@@ -120,7 +123,14 @@ class DetailsViewController: UIViewController {
         setupViewOnlineButtonConstraints()
         setupCommitsHistoryLabelConstraints()
         setupCommitsTableViewConstraints()
+        setupActivityIndicatorConstraints()
         setupShareRepoButtonConstraints()
+        
+        logic.hideActivityIndicator = { [weak self] in
+            DispatchQueue.main.async {
+                self?.activityIndicator.stopAnimating()
+            }
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -185,12 +195,24 @@ class DetailsViewController: UIViewController {
         commitsTableView.rightAnchor.constraint(equalTo: imageOverlayStack.rightAnchor).isActive = true
     }
     
+    private func setupActivityIndicatorConstraints() {
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.centerYAnchor.constraint(equalTo: commitsTableView.centerYAnchor).isActive = true
+        activityIndicator.centerXAnchor.constraint(equalTo: commitsTableView.centerXAnchor).isActive = true
+    }
+    
     private func setupShareRepoButtonConstraints() {
         shareRepoButton.translatesAutoresizingMaskIntoConstraints = false
         shareRepoButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16).isActive = true
         shareRepoButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         shareRepoButton.leftAnchor.constraint(equalTo: imageOverlayStack.leftAnchor).isActive = true
         shareRepoButton.rightAnchor.constraint(equalTo: imageOverlayStack.rightAnchor).isActive = true
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        logic.setupTableView(commitsTableView)
     }
     
     func update(image: UIImage?) {

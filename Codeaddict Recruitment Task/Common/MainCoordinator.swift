@@ -14,10 +14,15 @@ class MainCoordinator: Coordinator {
     }
 
     func initalizeRoot() {
-        let search = SearchViewController(viewModel:
-            .init(
-                navigationItemTitle: "Search",
-                headerViewLabelText: "Repositories"
+        let search = SearchViewController(
+            logic: .init(
+                viewModel: .init(
+                    navigationItemTitle: "Search",
+                    headerViewLabelText: "Repositories"
+                ),
+                restService: GitHubSearchServiceBroker(),
+                imageDataSource: ImageDataSource(),
+                disposeBag: .init()
             )
         )
         
@@ -27,7 +32,13 @@ class MainCoordinator: Coordinator {
     }
     
     func showDetails(with viewModel: DetailsViewModel) {
-        let details = DetailsViewController(viewModel: viewModel)
+        let details = DetailsViewController(
+            logic: .init(
+                viewModel: viewModel,
+                restService: GitHubCommitServiceBroker(),
+                disposeBag: .init()
+            )
+        )
         
         details.coordinator = self
         
@@ -43,5 +54,13 @@ class MainCoordinator: Coordinator {
     func showActivityScreen(with items: [Any]) {
         let activity = UIActivityViewController(activityItems: items, applicationActivities: nil)
         navigationController.present(activity, animated: true)
+    }
+    
+    func showAlert() {
+        let alert = UIAlertController(title: "Error", message: "An error occured", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
+        navigationController.present(alert, animated: true)
+
     }
 }
