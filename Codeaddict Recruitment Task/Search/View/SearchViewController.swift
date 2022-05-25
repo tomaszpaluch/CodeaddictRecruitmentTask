@@ -6,6 +6,10 @@ class SearchViewController: UIViewController {
         set { logic.coordinator = newValue }
     }
     
+    private var viewModel: SearchViewModel {
+        get { logic.viewModel }
+    }
+    
     private let logic: SearchLogic
     private let searchBar: UISearchBar
     private let activityIndicator: UIActivityIndicatorView
@@ -28,7 +32,7 @@ class SearchViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         
         view.backgroundColor = .systemBackground
-        navigationItem.title = logic.viewModel.navigationItemTitle
+        navigationItem.title = viewModel.navigationItemTitle
         
         view.addSubview(tableView)
         tableView.addSubview(activityIndicator)
@@ -37,6 +41,12 @@ class SearchViewController: UIViewController {
         setupTableViewConstraints()
         setupActivityIndicatorConstraints()
 
+        logic.setNewViewModel = { [weak self] in
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+        }
+        
         logic.showActivityIndicator = { [weak self] show in
             DispatchQueue.main.async {
                 if show {

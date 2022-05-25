@@ -32,6 +32,7 @@
 		30AEA821283B7988001E48D1 /* GitHubCommit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AEA820283B7988001E48D1 /* GitHubCommit.swift */; };
 		30AEA823283B79B6001E48D1 /* RestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AEA822283B79B6001E48D1 /* RestService.swift */; };
 		30AEA825283B7BBA001E48D1 /* GitHubCommitServiceBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AEA824283B7BBA001E48D1 /* GitHubCommitServiceBroker.swift */; };
+		30AEA828283EAC2D001E48D1 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 30AEA827283EAC2D001E48D1 /* README.md */; };
 		ABA1AEC3BFCC11FF8A3848BE /* Pods_Codeaddict_Recruitment_Task.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 833BB30B45701946897941D7 /* Pods_Codeaddict_Recruitment_Task.framework */; };
 		FD59760BE933E5C34E249201 /* Pods_Codeaddict_Recruitment_TaskTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DCB36CB9431FED028D77D0 /* Pods_Codeaddict_Recruitment_TaskTests.framework */; };
 /* End PBXBuildFile section */
@@ -84,6 +85,7 @@
 		30AEA820283B7988001E48D1 /* GitHubCommit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubCommit.swift; sourceTree = "<group>"; };
 		30AEA822283B79B6001E48D1 /* RestService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestService.swift; sourceTree = "<group>"; };
 		30AEA824283B7BBA001E48D1 /* GitHubCommitServiceBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubCommitServiceBroker.swift; sourceTree = "<group>"; };
+		30AEA827283EAC2D001E48D1 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		42DCB36CB9431FED028D77D0 /* Pods_Codeaddict_Recruitment_TaskTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Codeaddict_Recruitment_TaskTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		833BB30B45701946897941D7 /* Pods_Codeaddict_Recruitment_Task.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Codeaddict_Recruitment_Task.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B26A6364C465BC1973CCFA2E /* Pods-Codeaddict Recruitment TaskTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Codeaddict Recruitment TaskTests.release.xcconfig"; path = "Target Support Files/Pods-Codeaddict Recruitment TaskTests/Pods-Codeaddict Recruitment TaskTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 		300F816F28363C570034AB47 = {
 			isa = PBXGroup;
 			children = (
+				30AEA827283EAC2D001E48D1 /* README.md */,
 				300F81E52836822C0034AB47 /* Podfile */,
 				300F817A28363C570034AB47 /* Codeaddict Recruitment Task */,
 				300F819128363C5D0034AB47 /* Codeaddict Recruitment TaskTests */,
@@ -389,6 +392,7 @@
 			files = (
 				300F81E62836822C0034AB47 /* Podfile in Resources */,
 				300F818828363C5C0034AB47 /* LaunchScreen.storyboard in Resources */,
+				30AEA828283EAC2D001E48D1 /* README.md in Resources */,
 				300F818528363C5C0034AB47 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

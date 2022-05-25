@@ -18,7 +18,8 @@ class MainCoordinator: Coordinator {
             logic: .init(
                 viewModel: .init(
                     navigationItemTitle: "Search",
-                    headerViewLabelText: "Repositories"
+                    headerViewLabelText: "Repositories",
+                    searchItems: []
                 ),
                 restService: GitHubSearchServiceBroker(),
                 imageDataSource: ImageDataSource(),

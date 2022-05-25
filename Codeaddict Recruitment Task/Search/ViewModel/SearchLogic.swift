@@ -5,9 +5,14 @@ import RxCocoa
 class SearchLogic: NSObject {
     var coordinator: MainCoordinator?
     
+    var setNewViewModel: (() -> Void)?
     var showActivityIndicator: ((Bool) -> Void)?
     
-    let viewModel: SearchViewModel
+    var viewModel: SearchViewModel {
+        didSet {
+            setNewViewModel?()
+        }
+    }
     
     private let restService: GitHubSearchServiceBrokerable
     private let imageDataSource: ImageDataSourceable
@@ -15,7 +20,7 @@ class SearchLogic: NSObject {
 
     private let cellIdentifier: String
     
-    private var searchResults: BehaviorRelay<GitHubSearchResult>?
+//    private var searchResults: BehaviorRelay<GitHubSearchResult>?
     
     init(
         viewModel: SearchViewModel,
@@ -29,13 +34,13 @@ class SearchLogic: NSObject {
         self.disposeBag = disposeBag
         cellIdentifier = "cellID"
         
-        searchResults = BehaviorRelay(
-            value: GitHubSearchResult(
-                totalCount: 0,
-                incompleteResults: true,
-                items: []
-            )
-        )
+//        searchResults = BehaviorRelay(
+//            value: GitHubSearchResult(
+//                totalCount: 0,
+//                incompleteResults: true,
+//                items: []
+//            )
+//        )
     }
     
     func setupSearchBar(_ searchBar: UISearchBar) {
@@ -48,6 +53,8 @@ class SearchLogic: NSObject {
                 if !phrase.isEmpty {
                     self?.showActivityIndicator?(true)
                 }
+            }, afterNext: { [weak self] _ in
+                self?.showActivityIndicator?(false)
             })
             .debounce(.seconds(1), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
@@ -61,9 +68,8 @@ class SearchLogic: NSObject {
                 }
             }
             .subscribe(onNext: { [weak self] result in
-                self?.searchResults?.accept(
-                    result
-                )
+                self?.viewModel.searchItems = result.items
+                self?.setNewViewModel?()
             }, onError: { [weak self] error in
                 self?.coordinator?.showAlert()
             })
@@ -77,36 +83,36 @@ class SearchLogic: NSObject {
         )
         
         tableView.delegate = self
-        
-        searchResults?
-            .asObservable()
-            .map { $0.items }
-            .do(onNext: { [weak self] item in
-                self?.showActivityIndicator?(false)
-            })
-            .bind(
-                to: tableView.rx.items(
-                    cellIdentifier: cellIdentifier,
-                    cellType: MainTableViewCell.self
-                )
-            ) {  [weak self] row, item, cell in
-                let image = self?.imageDataSource.getImage(from: item.owner.avatarURL) { [weak self] image in
-                    DispatchQueue.main.async {
-                        tableView.reloadRows(
-                            at: [IndexPath(row: row, section: 0)],
-                            with: .fade
-                        )
-                        self?.coordinator?.updateDetails(with: image)
-                    }
-                }
-                
-                cell.setup(image: image, item: item)
-            }
-            .disposed(by: disposeBag)
+        tableView.dataSource = self
+//        searchResults?
+//            .asObservable()
+//            .map { $0.items }
+//            .do(onNext: { [weak self] _ in
+//                self?.showActivityIndicator?(false)
+//            })
+//            .bind(
+//                to: tableView.rx.items(
+//                    cellIdentifier: cellIdentifier,
+//                    cellType: MainTableViewCell.self
+//                )
+//            ) {  [weak self] row, item, cell in
+//                let image = self?.imageDataSource.getImage(from: item.owner.avatarURL) { [weak self] image in
+//                    DispatchQueue.main.async {
+//                        tableView.reloadRows(
+//                            at: [IndexPath(row: row, section: 0)],
+//                            with: .fade
+//                        )
+//                        self?.coordinator?.updateDetails(with: image)
+//                    }
+//                }
+//
+//                cell.setup(image: image, item: item)
+//            }
+//            .disposed(by: disposeBag)
     }
 }
 
-extension SearchLogic: UITableViewDelegate {
+extension SearchLogic: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = MainTableViewHeaderView()
         headerView.label.text = viewModel.headerViewLabelText
@@ -121,15 +127,43 @@ extension SearchLogic: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if let item = searchResults?.value.items[indexPath.row] {
-            let image = imageDataSource.getImage(from: item.owner.avatarURL)
-            
-            coordinator?.showDetails(
-                with: .init(
-                    ownerImage: image,
-                    item: item
-                )
+        let item = viewModel.searchItems[indexPath.row]
+        let image = imageDataSource.getImage(from: item.owner.avatarURL)
+        
+        coordinator?.showDetails(
+            with: .init(
+                ownerImage: image,
+                item: item
             )
+        )
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        viewModel.searchItems.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: cellIdentifier,
+            for: indexPath
+        )
+        
+        if let cell = cell as? MainTableViewCell {
+            let item = viewModel.searchItems[indexPath.row]
+            
+            let image = imageDataSource.getImage(from: item.owner.avatarURL) { [weak self] image in
+                DispatchQueue.main.async {
+                    tableView.reloadRows(
+                        at: [indexPath],
+                        with: .fade
+                    )
+                    self?.coordinator?.updateDetails(with: image)
+                }
+            }
+            
+            cell.setup(image: image, item: item)
         }
+        
+        return cell
     }
 }
